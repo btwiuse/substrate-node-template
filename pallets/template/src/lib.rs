@@ -70,6 +70,8 @@ decl_error! {
         NoSuchProof,
         /// The proof is claimed by another account, so caller can't revoke it.
         NotProofOwner,
+        /// The proof is too large to consume.
+        ProofTooLarge,
 	}
 }
 
@@ -124,6 +126,8 @@ decl_module! {
         /// Allow a user to claim ownership of an unclaimed proof.
         #[weight = 10_000]
         fn create_claim(origin, proof: Vec<u8>) {
+            // Check proof length sanity
+            ensure!(proof.len() <= 42, Error::<T>::ProofTooLarge);
             // Check that the extrinsic was signed and get the signer.
             // This function will return an error if the extrinsic is not signed.
             // https://substrate.dev/docs/en/knowledgebase/runtime/origin
