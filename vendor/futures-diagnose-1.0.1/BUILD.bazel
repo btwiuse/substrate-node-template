@@ -60,6 +60,6 @@ rust_library(
         "//vendor/parking_lot-0.9.0:parking_lot",
         "//vendor/pin-project-0.4.23:pin_project",
         "//vendor/serde-1.0.114:serde",
-        "//vendor/serde_json-1.0.57:serde_json",
+        "//vendor/serde_json-1.0.61:serde_json",
     ],
 )

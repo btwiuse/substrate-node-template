@@ -50,6 +50,6 @@ rust_library(
     # buildifier: leave-alone
     deps = [
         "//vendor/serde-1.0.114:serde",
-        "//vendor/serde_json-1.0.57:serde_json",
+        "//vendor/serde_json-1.0.61:serde_json",
     ],
 )

@@ -56,7 +56,7 @@ rust_library(
         "//vendor/merlin-2.0.0:merlin",
         "//vendor/parking_lot-0.10.2:parking_lot",
         "//vendor/rand-0.7.3:rand",
-        "//vendor/serde_json-1.0.57:serde_json",
+        "//vendor/serde_json-1.0.61:serde_json",
         "//vendor/sp-application-crypto-2.0.0:sp_application_crypto",
         "//vendor/sp-core-2.0.0:sp_core",
         "//vendor/subtle-2.2.3:subtle",

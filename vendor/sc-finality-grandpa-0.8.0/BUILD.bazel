@@ -71,7 +71,7 @@ rust_library(
         "//vendor/sc-network-0.8.0:sc_network",
         "//vendor/sc-network-gossip-0.8.0:sc_network_gossip",
         "//vendor/sc-telemetry-2.0.0:sc_telemetry",
-        "//vendor/serde_json-1.0.57:serde_json",
+        "//vendor/serde_json-1.0.61:serde_json",
         "//vendor/sp-api-2.0.0:sp_api",
         "//vendor/sp-application-crypto-2.0.0:sp_application_crypto",
         "//vendor/sp-arithmetic-2.0.0:sp_arithmetic",

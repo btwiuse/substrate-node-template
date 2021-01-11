@@ -61,7 +61,7 @@ rust_library(
         "//vendor/jsonrpc-pubsub-15.0.0:jsonrpc_pubsub",
         "//vendor/log-0.4.11:log",
         "//vendor/serde-1.0.114:serde",
-        "//vendor/serde_json-1.0.57:serde_json",
+        "//vendor/serde_json-1.0.61:serde_json",
         "//vendor/sp-runtime-2.0.0:sp_runtime",
         "//vendor/substrate-prometheus-endpoint-0.8.0:substrate_prometheus_endpoint",
     ] + selects.with_or({

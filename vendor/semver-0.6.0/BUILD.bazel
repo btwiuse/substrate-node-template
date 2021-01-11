@@ -25,22 +25,18 @@ package(default_visibility = [
 ])
 
 licenses([
-    "reciprocal",  # MPL-2.0 from expression "MPL-2.0"
+    "notice",  # MIT from expression "MIT OR Apache-2.0"
 ])
 
 # Generated Targets
 
-# Unsupported target "pretty" with type "example" omitted
-
 rust_library(
-    name = "slog_json",
+    name = "semver",
     srcs = glob(["**/*.rs"]),
     crate_features = [
         "default",
-        "erased-serde",
-        "nested-values",
     ],
-    crate_root = "lib.rs",
+    crate_root = "src/lib.rs",
     crate_type = "lib",
     data = [],
     edition = "2015",
@@ -51,13 +47,13 @@ rust_library(
         "cargo-raze",
         "manual",
     ],
-    version = "2.3.0",
+    version = "0.6.0",
     # buildifier: leave-alone
     deps = [
-        "//vendor/chrono-0.4.13:chrono",
-        "//vendor/erased-serde-0.3.12:erased_serde",
-        "//vendor/serde-1.0.114:serde",
-        "//vendor/serde_json-1.0.61:serde_json",
-        "//vendor/slog-2.5.2:slog",
+        "//vendor/semver-parser-0.7.0:semver_parser",
     ],
 )
+
+# Unsupported target "deprecation" with type "test" omitted
+
+# Unsupported target "regression" with type "test" omitted

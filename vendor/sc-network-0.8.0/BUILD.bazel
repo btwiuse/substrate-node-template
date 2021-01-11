@@ -118,7 +118,7 @@ rust_library(
         "//vendor/sc-client-api-2.0.0:sc_client_api",
         "//vendor/sc-peerset-2.0.0:sc_peerset",
         "//vendor/serde-1.0.114:serde",
-        "//vendor/serde_json-1.0.57:serde_json",
+        "//vendor/serde_json-1.0.61:serde_json",
         "//vendor/slog-2.5.2:slog",
         "//vendor/smallvec-0.6.13:smallvec",
         "//vendor/sp-arithmetic-2.0.0:sp_arithmetic",

@@ -52,7 +52,7 @@ rust_library(
         "//vendor/futures-0.3.5:futures",
         "//vendor/libp2p-0.28.1:libp2p",
         "//vendor/log-0.4.11:log",
-        "//vendor/serde_json-1.0.57:serde_json",
+        "//vendor/serde_json-1.0.61:serde_json",
         "//vendor/sp-utils-2.0.0:sp_utils",
         "//vendor/wasm-timer-0.2.4:wasm_timer",
     ],

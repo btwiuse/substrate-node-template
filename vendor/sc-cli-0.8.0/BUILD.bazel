@@ -78,7 +78,7 @@ rust_library(
         "//vendor/sc-telemetry-2.0.0:sc_telemetry",
         "//vendor/sc-tracing-2.0.0:sc_tracing",
         "//vendor/serde-1.0.114:serde",
-        "//vendor/serde_json-1.0.57:serde_json",
+        "//vendor/serde_json-1.0.61:serde_json",
         "//vendor/sp-blockchain-2.0.0:sp_blockchain",
         "//vendor/sp-core-2.0.0:sp_core",
         "//vendor/sp-keyring-2.0.0:sp_keyring",

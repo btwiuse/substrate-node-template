@@ -60,7 +60,7 @@ rust_library(
         "//vendor/sc-network-0.8.0:sc_network",
         "//vendor/sc-telemetry-2.0.0:sc_telemetry",
         "//vendor/serde-1.0.114:serde",
-        "//vendor/serde_json-1.0.57:serde_json",
+        "//vendor/serde_json-1.0.61:serde_json",
         "//vendor/sp-chain-spec-2.0.0:sp_chain_spec",
         "//vendor/sp-core-2.0.0:sp_core",
         "//vendor/sp-runtime-2.0.0:sp_runtime",

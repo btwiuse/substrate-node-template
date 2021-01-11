@@ -25,25 +25,22 @@ package(default_visibility = [
 ])
 
 licenses([
-    "reciprocal",  # MPL-2.0 from expression "MPL-2.0"
+    "unencumbered",  # Unlicense from expression "Unlicense OR MIT"
 ])
 
 # Generated Targets
 
-# Unsupported target "pretty" with type "example" omitted
-
 rust_library(
-    name = "slog_json",
+    name = "walkdir",
     srcs = glob(["**/*.rs"]),
+    aliases = {
+    },
     crate_features = [
-        "default",
-        "erased-serde",
-        "nested-values",
     ],
-    crate_root = "lib.rs",
+    crate_root = "src/lib.rs",
     crate_type = "lib",
     data = [],
-    edition = "2015",
+    edition = "2018",
     rustc_flags = [
         "--cap-lints=allow",
     ],
@@ -51,13 +48,18 @@ rust_library(
         "cargo-raze",
         "manual",
     ],
-    version = "2.3.0",
+    version = "2.3.1",
     # buildifier: leave-alone
     deps = [
-        "//vendor/chrono-0.4.13:chrono",
-        "//vendor/erased-serde-0.3.12:erased_serde",
-        "//vendor/serde-1.0.114:serde",
-        "//vendor/serde_json-1.0.61:serde_json",
-        "//vendor/slog-2.5.2:slog",
-    ],
+        "//vendor/same-file-1.0.6:same_file",
+    ] + selects.with_or({
+        # cfg(windows)
+        (
+            "@io_bazel_rules_rust//rust/platform:x86_64-pc-windows-msvc",
+        ): [
+            "//vendor/winapi-0.3.9:winapi",
+            "//vendor/winapi-util-0.1.5:winapi_util",
+        ],
+        "//conditions:default": [],
+    }),
 )
