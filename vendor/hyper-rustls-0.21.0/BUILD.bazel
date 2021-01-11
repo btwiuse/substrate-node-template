@@ -1,0 +1,74 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # Apache-2.0 from expression "Apache-2.0 OR (ISC OR MIT)"
+])
+
+# Generated Targets
+
+# Unsupported target "client" with type "example" omitted
+
+# Unsupported target "server" with type "example" omitted
+
+rust_library(
+    name = "hyper_rustls",
+    srcs = glob(["**/*.rs"]),
+    crate_features = [
+        "ct-logs",
+        "default",
+        "native-tokio",
+        "rustls-native-certs",
+        "tokio-runtime",
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.21.0",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/bytes-0.5.6:bytes",
+        "//vendor/ct-logs-0.7.0:ct_logs",
+        "//vendor/futures-util-0.3.5:futures_util",
+        "//vendor/hyper-0.13.7:hyper",
+        "//vendor/log-0.4.11:log",
+        "//vendor/rustls-0.18.0:rustls",
+        "//vendor/rustls-native-certs-0.4.0:rustls_native_certs",
+        "//vendor/tokio-0.2.22:tokio",
+        "//vendor/tokio-rustls-0.14.0:tokio_rustls",
+        "//vendor/webpki-0.21.3:webpki",
+    ],
+)
+
+# Unsupported target "tests" with type "test" omitted

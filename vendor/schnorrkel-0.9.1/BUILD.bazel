@@ -1,0 +1,71 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # BSD-3-Clause from expression "BSD-3-Clause"
+])
+
+# Generated Targets
+
+# Unsupported target "schnorr_benchmarks" with type "bench" omitted
+
+rust_library(
+    name = "schnorrkel",
+    srcs = glob(["**/*.rs"]),
+    crate_features = [
+        "default",
+        "getrandom",
+        "preaudit_deprecated",
+        "rand",
+        "std",
+        "u64_backend",
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.9.1",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/arrayref-0.3.6:arrayref",
+        "//vendor/arrayvec-0.5.1:arrayvec",
+        "//vendor/curve25519-dalek-2.1.0:curve25519_dalek",
+        "//vendor/getrandom-0.1.14:getrandom",
+        "//vendor/merlin-2.0.0:merlin",
+        "//vendor/rand-0.7.3:rand",
+        "//vendor/rand_core-0.5.1:rand_core",
+        "//vendor/sha2-0.8.2:sha2",
+        "//vendor/subtle-2.2.3:subtle",
+        "//vendor/zeroize-1.1.0:zeroize",
+    ],
+)

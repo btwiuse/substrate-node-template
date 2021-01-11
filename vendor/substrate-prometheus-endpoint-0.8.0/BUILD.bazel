@@ -1,0 +1,73 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # Apache-2.0 from expression "Apache-2.0"
+])
+
+# Generated Targets
+
+rust_library(
+    name = "substrate_prometheus_endpoint",
+    srcs = glob(["**/*.rs"]),
+    aliases = {
+    },
+    crate_features = [
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    proc_macro_deps = [
+        "//vendor/derive_more-0.99.9:derive_more",
+    ],
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.8.0",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/futures-util-0.3.5:futures_util",
+        "//vendor/log-0.4.11:log",
+        "//vendor/prometheus-0.10.0:prometheus",
+    ] + selects.with_or({
+        # cfg(not(target_os = "unknown"))
+        (
+            "@io_bazel_rules_rust//rust/platform:x86_64-apple-darwin",
+            "@io_bazel_rules_rust//rust/platform:x86_64-pc-windows-msvc",
+            "@io_bazel_rules_rust//rust/platform:x86_64-unknown-linux-gnu",
+        ): [
+            "//vendor/async-std-1.6.2:async_std",
+            "//vendor/hyper-0.13.7:hyper",
+            "//vendor/tokio-0.2.22:tokio",
+        ],
+        "//conditions:default": [],
+    }),
+)

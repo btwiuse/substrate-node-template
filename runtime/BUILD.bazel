@@ -1,0 +1,247 @@
+"""
+@generated
+cargo-raze generated Bazel file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+package(default_visibility = ["//visibility:public"])
+
+licenses([
+    "notice",  # See individual crates for specific licenses
+])
+
+# Aliased targets
+alias(
+    name = "frame_executive",
+    actual = "//vendor/frame-executive-2.0.0:frame_executive",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "frame_support",
+    actual = "//vendor/frame-support-2.0.0:frame_support",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "frame_system",
+    actual = "//vendor/frame-system-2.0.0:frame_system",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "frame_system_rpc_runtime_api",
+    actual = "//vendor/frame-system-rpc-runtime-api-2.0.0:frame_system_rpc_runtime_api",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "pallet_aura",
+    actual = "//vendor/pallet-aura-2.0.0:pallet_aura",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "pallet_balances",
+    actual = "//vendor/pallet-balances-2.0.0:pallet_balances",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "pallet_grandpa",
+    actual = "//vendor/pallet-grandpa-2.0.0:pallet_grandpa",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "pallet_randomness_collective_flip",
+    actual = "//vendor/pallet-randomness-collective-flip-2.0.0:pallet_randomness_collective_flip",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "pallet_sudo",
+    actual = "//vendor/pallet-sudo-2.0.0:pallet_sudo",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "pallet_timestamp",
+    actual = "//vendor/pallet-timestamp-2.0.0:pallet_timestamp",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "pallet_transaction_payment",
+    actual = "//vendor/pallet-transaction-payment-2.0.0:pallet_transaction_payment",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "pallet_transaction_payment_rpc_runtime_api",
+    actual = "//vendor/pallet-transaction-payment-rpc-runtime-api-2.0.0:pallet_transaction_payment_rpc_runtime_api",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "parity_scale_codec",
+    actual = "//vendor/parity-scale-codec-1.3.4:parity_scale_codec",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "serde",
+    actual = "//vendor/serde-1.0.114:serde",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_api",
+    actual = "//vendor/sp-api-2.0.0:sp_api",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_block_builder",
+    actual = "//vendor/sp-block-builder-2.0.0:sp_block_builder",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_consensus_aura",
+    actual = "//vendor/sp-consensus-aura-0.8.0:sp_consensus_aura",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_core",
+    actual = "//vendor/sp-core-2.0.0:sp_core",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_inherents",
+    actual = "//vendor/sp-inherents-2.0.0:sp_inherents",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_offchain",
+    actual = "//vendor/sp-offchain-2.0.0:sp_offchain",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_runtime",
+    actual = "//vendor/sp-runtime-2.0.0:sp_runtime",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_session",
+    actual = "//vendor/sp-session-2.0.0:sp_session",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_std",
+    actual = "//vendor/sp-std-2.0.0:sp_std",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_transaction_pool",
+    actual = "//vendor/sp-transaction-pool-2.0.0:sp_transaction_pool",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_version",
+    actual = "//vendor/sp-version-2.0.0:sp_version",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "substrate_wasm_builder_runner",
+    actual = "//vendor/substrate-wasm-builder-runner-2.0.0:substrate_wasm_builder_runner",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)

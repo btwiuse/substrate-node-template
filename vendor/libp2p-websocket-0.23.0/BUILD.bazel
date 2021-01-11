@@ -1,0 +1,65 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # MIT from expression "MIT"
+])
+
+# Generated Targets
+
+rust_library(
+    name = "libp2p_websocket",
+    srcs = glob(["**/*.rs"]),
+    crate_features = [
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.23.0",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/async-tls-0.8.0:async_tls",
+        "//vendor/either-1.6.1:either",
+        "//vendor/futures-0.3.5:futures",
+        "//vendor/libp2p-core-0.22.1:libp2p_core",
+        "//vendor/log-0.4.11:log",
+        "//vendor/quicksink-0.1.2:quicksink",
+        "//vendor/rustls-0.18.0:rustls",
+        "//vendor/rw-stream-sink-0.2.1:rw_stream_sink",
+        "//vendor/soketto-0.4.1:soketto",
+        "//vendor/url-2.1.1:url",
+        "//vendor/webpki-0.21.3:webpki",
+        "//vendor/webpki-roots-0.18.0:webpki_roots",
+    ],
+)

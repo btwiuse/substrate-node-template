@@ -1,0 +1,71 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # MIT from expression "MIT"
+])
+
+# Generated Targets
+
+# Unsupported target "benchmark" with type "bench" omitted
+
+# Unsupported target "uvi" with type "example" omitted
+
+rust_library(
+    name = "unsigned_varint",
+    srcs = glob(["**/*.rs"]),
+    crate_features = [
+        "bytes",
+        "futures",
+        "futures-codec",
+        "futures-io",
+        "futures-util",
+        "futures_codec",
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.4.0",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/bytes-0.5.6:bytes",
+        "//vendor/futures-io-0.3.5:futures_io",
+        "//vendor/futures-util-0.3.5:futures_util",
+        "//vendor/futures_codec-0.4.1:futures_codec",
+    ],
+)
+
+# Unsupported target "identity" with type "test" omitted
+
+# Unsupported target "io" with type "test" omitted

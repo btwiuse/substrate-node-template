@@ -1,0 +1,83 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "restricted",  # GPL-3.0 from expression "GPL-3.0"
+])
+
+# Generated Targets
+
+rust_library(
+    name = "sc_consensus_aura",
+    srcs = glob(["**/*.rs"]),
+    aliases = {
+        "//vendor/parity-scale-codec-1.3.4:parity_scale_codec": "codec",
+        "//vendor/substrate-prometheus-endpoint-0.8.0:substrate_prometheus_endpoint": "prometheus_endpoint",
+    },
+    crate_features = [
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    proc_macro_deps = [
+        "//vendor/derive_more-0.99.9:derive_more",
+    ],
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.8.0",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/futures-0.3.5:futures",
+        "//vendor/futures-timer-3.0.2:futures_timer",
+        "//vendor/log-0.4.11:log",
+        "//vendor/parity-scale-codec-1.3.4:parity_scale_codec",
+        "//vendor/parking_lot-0.10.2:parking_lot",
+        "//vendor/sc-block-builder-0.8.0:sc_block_builder",
+        "//vendor/sc-client-api-2.0.0:sc_client_api",
+        "//vendor/sc-consensus-slots-0.8.0:sc_consensus_slots",
+        "//vendor/sc-keystore-2.0.0:sc_keystore",
+        "//vendor/sc-telemetry-2.0.0:sc_telemetry",
+        "//vendor/sp-api-2.0.0:sp_api",
+        "//vendor/sp-application-crypto-2.0.0:sp_application_crypto",
+        "//vendor/sp-block-builder-2.0.0:sp_block_builder",
+        "//vendor/sp-blockchain-2.0.0:sp_blockchain",
+        "//vendor/sp-consensus-0.8.0:sp_consensus",
+        "//vendor/sp-consensus-aura-0.8.0:sp_consensus_aura",
+        "//vendor/sp-core-2.0.0:sp_core",
+        "//vendor/sp-inherents-2.0.0:sp_inherents",
+        "//vendor/sp-io-2.0.0:sp_io",
+        "//vendor/sp-runtime-2.0.0:sp_runtime",
+        "//vendor/sp-timestamp-2.0.0:sp_timestamp",
+        "//vendor/sp-version-2.0.0:sp_version",
+        "//vendor/substrate-prometheus-endpoint-0.8.0:substrate_prometheus_endpoint",
+    ],
+)

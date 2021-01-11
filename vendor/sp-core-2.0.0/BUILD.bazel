@@ -1,0 +1,122 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # Apache-2.0 from expression "Apache-2.0"
+])
+
+# Generated Targets
+
+# Unsupported target "bench" with type "bench" omitted
+
+rust_library(
+    name = "sp_core",
+    srcs = glob(["**/*.rs"]),
+    aliases = {
+        "//vendor/parity-scale-codec-1.3.4:parity_scale_codec": "codec",
+    },
+    crate_features = [
+        "base58",
+        "blake2-rfc",
+        "default",
+        "dyn-clonable",
+        "ed25519-dalek",
+        "full_crypto",
+        "futures",
+        "hex",
+        "impl-serde",
+        "lazy_static",
+        "libsecp256k1",
+        "merlin",
+        "parking_lot",
+        "rand",
+        "regex",
+        "schnorrkel",
+        "serde",
+        "sha2",
+        "sp-externalities",
+        "std",
+        "substrate-bip39",
+        "tiny-bip39",
+        "tiny-keccak",
+        "twox-hash",
+        "wasmi",
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    proc_macro_deps = [
+        "//vendor/derive_more-0.99.9:derive_more",
+        "//vendor/sp-debug-derive-2.0.0:sp_debug_derive",
+    ],
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "2.0.0",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/base58-0.1.0:base58",
+        "//vendor/blake2-rfc-0.2.18:blake2_rfc",
+        "//vendor/byteorder-1.3.4:byteorder",
+        "//vendor/dyn-clonable-0.9.0:dyn_clonable",
+        "//vendor/ed25519-dalek-1.0.0-pre.4:ed25519_dalek",
+        "//vendor/futures-0.3.5:futures",
+        "//vendor/hash-db-0.15.2:hash_db",
+        "//vendor/hash256-std-hasher-0.15.2:hash256_std_hasher",
+        "//vendor/hex-0.4.2:hex",
+        "//vendor/impl-serde-0.3.1:impl_serde",
+        "//vendor/lazy_static-1.4.0:lazy_static",
+        "//vendor/libsecp256k1-0.3.5:libsecp256k1",
+        "//vendor/log-0.4.11:log",
+        "//vendor/merlin-2.0.0:merlin",
+        "//vendor/num-traits-0.2.12:num_traits",
+        "//vendor/parity-scale-codec-1.3.4:parity_scale_codec",
+        "//vendor/parity-util-mem-0.7.0:parity_util_mem",
+        "//vendor/parking_lot-0.10.2:parking_lot",
+        "//vendor/primitive-types-0.7.2:primitive_types",
+        "//vendor/rand-0.7.3:rand",
+        "//vendor/regex-1.3.9:regex",
+        "//vendor/schnorrkel-0.9.1:schnorrkel",
+        "//vendor/secrecy-0.6.0:secrecy",
+        "//vendor/serde-1.0.114:serde",
+        "//vendor/sha2-0.8.2:sha2",
+        "//vendor/sp-externalities-0.8.0:sp_externalities",
+        "//vendor/sp-runtime-interface-2.0.0:sp_runtime_interface",
+        "//vendor/sp-std-2.0.0:sp_std",
+        "//vendor/sp-storage-2.0.0:sp_storage",
+        "//vendor/substrate-bip39-0.4.2:substrate_bip39",
+        "//vendor/tiny-bip39-0.7.3:tiny_bip39",
+        "//vendor/tiny-keccak-2.0.2:tiny_keccak",
+        "//vendor/twox-hash-1.5.0:twox_hash",
+        "//vendor/wasmi-0.6.2:wasmi",
+        "//vendor/zeroize-1.1.0:zeroize",
+    ],
+)

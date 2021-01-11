@@ -1,0 +1,143 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # Apache-2.0 from expression "Apache-2.0"
+])
+
+# Generated Targets
+# buildifier: disable=load-on-top
+load(
+    "@io_bazel_rules_rust//cargo:cargo_build_script.bzl",
+    "cargo_build_script",
+)
+
+cargo_build_script(
+    name = "wasmtime_environ_build_script",
+    srcs = glob(["**/*.rs"]),
+    build_script_env = {
+    },
+    crate_features = [
+        "parallel-compilation",
+        "rayon",
+    ],
+    crate_root = "build.rs",
+    data = glob(["**"]),
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.19.0",
+    visibility = ["//visibility:private"],
+    deps = [
+    ] + selects.with_or({
+        # cfg(not(target_os = "windows"))
+        (
+            "@io_bazel_rules_rust//rust/platform:x86_64-apple-darwin",
+            "@io_bazel_rules_rust//rust/platform:x86_64-unknown-linux-gnu",
+        ): [
+        ],
+        "//conditions:default": [],
+    }) + selects.with_or({
+        # cfg(target_os = "windows")
+        (
+            "@io_bazel_rules_rust//rust/platform:x86_64-pc-windows-msvc",
+        ): [
+        ],
+        "//conditions:default": [],
+    }),
+)
+
+rust_library(
+    name = "wasmtime_environ",
+    srcs = glob(["**/*.rs"]),
+    aliases = {
+    },
+    crate_features = [
+        "parallel-compilation",
+        "rayon",
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.19.0",
+    # buildifier: leave-alone
+    deps = [
+        ":wasmtime_environ_build_script",
+        "//vendor/anyhow-1.0.32:anyhow",
+        "//vendor/base64-0.12.3:base64",
+        "//vendor/bincode-1.3.1:bincode",
+        "//vendor/cfg-if-0.1.10:cfg_if",
+        "//vendor/cranelift-codegen-0.66.0:cranelift_codegen",
+        "//vendor/cranelift-entity-0.66.0:cranelift_entity",
+        "//vendor/cranelift-frontend-0.66.0:cranelift_frontend",
+        "//vendor/cranelift-wasm-0.66.0:cranelift_wasm",
+        "//vendor/directories-2.0.2:directories",
+        "//vendor/file-per-thread-logger-0.1.3:file_per_thread_logger",
+        "//vendor/indexmap-1.5.0:indexmap",
+        "//vendor/log-0.4.11:log",
+        "//vendor/more-asserts-0.2.1:more_asserts",
+        "//vendor/rayon-1.3.1:rayon",
+        "//vendor/serde-1.0.114:serde",
+        "//vendor/sha2-0.8.2:sha2",
+        "//vendor/thiserror-1.0.20:thiserror",
+        "//vendor/toml-0.5.6:toml",
+        "//vendor/wasmparser-0.59.0:wasmparser",
+        "//vendor/zstd-0.5.3+zstd.1.4.5:zstd",
+    ] + selects.with_or({
+        # cfg(not(target_os = "windows"))
+        (
+            "@io_bazel_rules_rust//rust/platform:x86_64-apple-darwin",
+            "@io_bazel_rules_rust//rust/platform:x86_64-unknown-linux-gnu",
+        ): [
+            "//vendor/errno-0.2.6:errno",
+            "//vendor/libc-0.2.73:libc",
+        ],
+        "//conditions:default": [],
+    }) + selects.with_or({
+        # cfg(target_os = "windows")
+        (
+            "@io_bazel_rules_rust//rust/platform:x86_64-pc-windows-msvc",
+        ): [
+            "//vendor/winapi-0.3.9:winapi",
+        ],
+        "//conditions:default": [],
+    }),
+)
+
+# Unsupported target "cache_write_default_config" with type "test" omitted

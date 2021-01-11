@@ -1,0 +1,265 @@
+"""
+@generated
+cargo-raze generated Bazel file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+package(default_visibility = ["//visibility:public"])
+
+licenses([
+    "notice",  # See individual crates for specific licenses
+])
+
+# Aliased targets
+alias(
+    name = "frame_benchmarking",
+    actual = "//vendor/frame-benchmarking-2.0.0:frame_benchmarking",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "frame_benchmarking_cli",
+    actual = "//vendor/frame-benchmarking-cli-2.0.0:frame_benchmarking_cli",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "jsonrpc_core",
+    actual = "//vendor/jsonrpc-core-15.0.0:jsonrpc_core",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "pallet_transaction_payment_rpc",
+    actual = "//vendor/pallet-transaction-payment-rpc-2.0.0:pallet_transaction_payment_rpc",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sc_basic_authorship",
+    actual = "//vendor/sc-basic-authorship-0.8.0:sc_basic_authorship",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sc_cli",
+    actual = "//vendor/sc-cli-0.8.0:sc_cli",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sc_client_api",
+    actual = "//vendor/sc-client-api-2.0.0:sc_client_api",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sc_consensus",
+    actual = "//vendor/sc-consensus-0.8.0:sc_consensus",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sc_consensus_aura",
+    actual = "//vendor/sc-consensus-aura-0.8.0:sc_consensus_aura",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sc_executor",
+    actual = "//vendor/sc-executor-0.8.0:sc_executor",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sc_finality_grandpa",
+    actual = "//vendor/sc-finality-grandpa-0.8.0:sc_finality_grandpa",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sc_rpc",
+    actual = "//vendor/sc-rpc-2.0.0:sc_rpc",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sc_rpc_api",
+    actual = "//vendor/sc-rpc-api-0.8.0:sc_rpc_api",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sc_service",
+    actual = "//vendor/sc-service-0.8.0:sc_service",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sc_transaction_pool",
+    actual = "//vendor/sc-transaction-pool-2.0.0:sc_transaction_pool",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_api",
+    actual = "//vendor/sp-api-2.0.0:sp_api",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_block_builder",
+    actual = "//vendor/sp-block-builder-2.0.0:sp_block_builder",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_blockchain",
+    actual = "//vendor/sp-blockchain-2.0.0:sp_blockchain",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_consensus",
+    actual = "//vendor/sp-consensus-0.8.0:sp_consensus",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_consensus_aura",
+    actual = "//vendor/sp-consensus-aura-0.8.0:sp_consensus_aura",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_core",
+    actual = "//vendor/sp-core-2.0.0:sp_core",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_finality_grandpa",
+    actual = "//vendor/sp-finality-grandpa-2.0.0:sp_finality_grandpa",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_inherents",
+    actual = "//vendor/sp-inherents-2.0.0:sp_inherents",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_runtime",
+    actual = "//vendor/sp-runtime-2.0.0:sp_runtime",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_transaction_pool",
+    actual = "//vendor/sp-transaction-pool-2.0.0:sp_transaction_pool",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "structopt",
+    actual = "//vendor/structopt-0.3.15:structopt",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "substrate_build_script_utils",
+    actual = "//vendor/substrate-build-script-utils-2.0.0:substrate_build_script_utils",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "substrate_frame_rpc_system",
+    actual = "//vendor/substrate-frame-rpc-system-2.0.0:substrate_frame_rpc_system",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)

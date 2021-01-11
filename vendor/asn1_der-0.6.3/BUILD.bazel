@@ -1,0 +1,81 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # MIT from expression "BSD-2-Clause OR MIT"
+])
+
+# Generated Targets
+
+rust_library(
+    name = "asn1_der",
+    srcs = glob(["**/*.rs"]),
+    crate_features = [
+        "asn1_der_derive",
+        "default",
+        "derive",
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2015",
+    proc_macro_deps = [
+        "//vendor/asn1_der_derive-0.1.2:asn1_der_derive",
+    ],
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.6.3",
+    # buildifier: leave-alone
+    deps = [
+    ],
+)
+
+# Unsupported target "asn1_der_derive" with type "test" omitted
+
+# Unsupported target "der" with type "test" omitted
+
+# Unsupported target "der_length" with type "test" omitted
+
+# Unsupported target "der_tag" with type "test" omitted
+
+# Unsupported target "der_value" with type "test" omitted
+
+# Unsupported target "types_boolean" with type "test" omitted
+
+# Unsupported target "types_integer" with type "test" omitted
+
+# Unsupported target "types_null" with type "test" omitted
+
+# Unsupported target "types_octet_string" with type "test" omitted
+
+# Unsupported target "types_sequence" with type "test" omitted
+
+# Unsupported target "types_utf8_string" with type "test" omitted

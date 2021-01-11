@@ -1,0 +1,84 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # Apache-2.0 from expression "Apache-2.0"
+])
+
+# Generated Targets
+
+rust_library(
+    name = "wasmtime_jit",
+    srcs = glob(["**/*.rs"]),
+    aliases = {
+    },
+    crate_features = [
+        "jitdump",
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.19.0",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/anyhow-1.0.32:anyhow",
+        "//vendor/cfg-if-0.1.10:cfg_if",
+        "//vendor/cranelift-codegen-0.66.0:cranelift_codegen",
+        "//vendor/cranelift-entity-0.66.0:cranelift_entity",
+        "//vendor/cranelift-frontend-0.66.0:cranelift_frontend",
+        "//vendor/cranelift-native-0.66.0:cranelift_native",
+        "//vendor/cranelift-wasm-0.66.0:cranelift_wasm",
+        "//vendor/gimli-0.21.0:gimli",
+        "//vendor/log-0.4.11:log",
+        "//vendor/more-asserts-0.2.1:more_asserts",
+        "//vendor/object-0.20.0:object",
+        "//vendor/region-2.2.0:region",
+        "//vendor/target-lexicon-0.10.0:target_lexicon",
+        "//vendor/thiserror-1.0.20:thiserror",
+        "//vendor/wasmparser-0.59.0:wasmparser",
+        "//vendor/wasmtime-debug-0.19.0:wasmtime_debug",
+        "//vendor/wasmtime-environ-0.19.0:wasmtime_environ",
+        "//vendor/wasmtime-obj-0.19.0:wasmtime_obj",
+        "//vendor/wasmtime-profiling-0.19.0:wasmtime_profiling",
+        "//vendor/wasmtime-runtime-0.19.0:wasmtime_runtime",
+    ] + selects.with_or({
+        # cfg(target_os = "windows")
+        (
+            "@io_bazel_rules_rust//rust/platform:x86_64-pc-windows-msvc",
+        ): [
+            "//vendor/winapi-0.3.9:winapi",
+        ],
+        "//conditions:default": [],
+    }),
+)

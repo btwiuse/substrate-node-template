@@ -1,0 +1,74 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # MIT from expression "MIT OR Apache-2.0"
+])
+
+# Generated Targets
+
+# Unsupported target "bench" with type "bench" omitted
+
+rust_library(
+    name = "bip39",
+    srcs = glob(["**/*.rs"]),
+    crate_features = [
+        "chinese-simplified",
+        "chinese-traditional",
+        "default",
+        "french",
+        "italian",
+        "japanese",
+        "korean",
+        "spanish",
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2015",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.6.0-beta.1",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/failure-0.1.8:failure",
+        "//vendor/hashbrown-0.1.8:hashbrown",
+        "//vendor/hmac-0.7.1:hmac",
+        "//vendor/once_cell-0.1.8:once_cell",
+        "//vendor/pbkdf2-0.3.0:pbkdf2",
+        "//vendor/rand-0.6.5:rand",
+        "//vendor/sha2-0.8.2:sha2",
+    ],
+)
+
+# Unsupported target "generate" with type "test" omitted
+
+# Unsupported target "validate" with type "test" omitted

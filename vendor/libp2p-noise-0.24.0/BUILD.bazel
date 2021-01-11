@@ -1,0 +1,118 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # MIT from expression "MIT"
+])
+
+# Generated Targets
+# buildifier: disable=load-on-top
+load(
+    "@io_bazel_rules_rust//cargo:cargo_build_script.bzl",
+    "cargo_build_script",
+)
+
+cargo_build_script(
+    name = "libp2p_noise_build_script",
+    srcs = glob(["**/*.rs"]),
+    build_script_env = {
+    },
+    crate_features = [
+    ],
+    crate_root = "build.rs",
+    data = glob(["**"]),
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.24.0",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//vendor/prost-build-0.6.1:prost_build",
+    ] + selects.with_or({
+        # cfg(not(target_arch = "wasm32"))
+        (
+            "@io_bazel_rules_rust//rust/platform:x86_64-apple-darwin",
+            "@io_bazel_rules_rust//rust/platform:x86_64-pc-windows-msvc",
+            "@io_bazel_rules_rust//rust/platform:x86_64-unknown-linux-gnu",
+        ): [
+        ],
+        "//conditions:default": [],
+    }),
+)
+
+rust_library(
+    name = "libp2p_noise",
+    srcs = glob(["**/*.rs"]),
+    aliases = {
+    },
+    crate_features = [
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.24.0",
+    # buildifier: leave-alone
+    deps = [
+        ":libp2p_noise_build_script",
+        "//vendor/bytes-0.5.6:bytes",
+        "//vendor/curve25519-dalek-2.1.0:curve25519_dalek",
+        "//vendor/futures-0.3.5:futures",
+        "//vendor/lazy_static-1.4.0:lazy_static",
+        "//vendor/libp2p-core-0.22.1:libp2p_core",
+        "//vendor/log-0.4.11:log",
+        "//vendor/prost-0.6.1:prost",
+        "//vendor/rand-0.7.3:rand",
+        "//vendor/sha2-0.8.2:sha2",
+        "//vendor/static_assertions-1.1.0:static_assertions",
+        "//vendor/x25519-dalek-0.6.0:x25519_dalek",
+        "//vendor/zeroize-1.1.0:zeroize",
+    ] + selects.with_or({
+        # cfg(not(target_arch = "wasm32"))
+        (
+            "@io_bazel_rules_rust//rust/platform:x86_64-apple-darwin",
+            "@io_bazel_rules_rust//rust/platform:x86_64-pc-windows-msvc",
+            "@io_bazel_rules_rust//rust/platform:x86_64-unknown-linux-gnu",
+        ): [
+            "//vendor/snow-0.7.1:snow",
+        ],
+        "//conditions:default": [],
+    }),
+)
+
+# Unsupported target "smoke" with type "test" omitted

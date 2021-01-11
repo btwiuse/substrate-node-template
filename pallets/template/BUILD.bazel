@@ -1,0 +1,76 @@
+"""
+@generated
+cargo-raze generated Bazel file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+package(default_visibility = ["//visibility:public"])
+
+licenses([
+    "notice",  # See individual crates for specific licenses
+])
+
+# Aliased targets
+alias(
+    name = "frame_support",
+    actual = "//vendor/frame-support-2.0.0:frame_support",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "frame_system",
+    actual = "//vendor/frame-system-2.0.0:frame_system",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "parity_scale_codec",
+    actual = "//vendor/parity-scale-codec-1.3.4:parity_scale_codec",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_core",
+    actual = "//vendor/sp-core-2.0.0:sp_core",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_io",
+    actual = "//vendor/sp-io-2.0.0:sp_io",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_runtime",
+    actual = "//vendor/sp-runtime-2.0.0:sp_runtime",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+alias(
+    name = "sp_std",
+    actual = "//vendor/sp-std-2.0.0:sp_std",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)

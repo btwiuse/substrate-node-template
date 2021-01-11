@@ -1,0 +1,61 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # MIT from expression "MIT"
+])
+
+# Generated Targets
+
+rust_library(
+    name = "jsonrpc_server_utils",
+    srcs = glob(["**/*.rs"]),
+    crate_features = [
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "15.0.0",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/bytes-0.4.12:bytes",
+        "//vendor/globset-0.4.5:globset",
+        "//vendor/jsonrpc-core-15.0.0:jsonrpc_core",
+        "//vendor/lazy_static-1.4.0:lazy_static",
+        "//vendor/log-0.4.11:log",
+        "//vendor/tokio-0.1.22:tokio",
+        "//vendor/tokio-codec-0.1.2:tokio_codec",
+        "//vendor/unicase-2.6.0:unicase",
+    ],
+)

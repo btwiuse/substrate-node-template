@@ -1,0 +1,68 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # MIT from expression "MIT"
+])
+
+# Generated Targets
+
+rust_library(
+    name = "libp2p_mdns",
+    srcs = glob(["**/*.rs"]),
+    crate_features = [
+        "async-std",
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.22.0",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/async-std-1.6.2:async_std",
+        "//vendor/data-encoding-2.2.1:data_encoding",
+        "//vendor/dns-parser-0.8.0:dns_parser",
+        "//vendor/either-1.6.1:either",
+        "//vendor/futures-0.3.5:futures",
+        "//vendor/lazy_static-1.4.0:lazy_static",
+        "//vendor/libp2p-core-0.22.1:libp2p_core",
+        "//vendor/libp2p-swarm-0.22.0:libp2p_swarm",
+        "//vendor/log-0.4.11:log",
+        "//vendor/net2-0.2.34:net2",
+        "//vendor/rand-0.7.3:rand",
+        "//vendor/smallvec-1.4.1:smallvec",
+        "//vendor/void-1.0.2:void",
+        "//vendor/wasm-timer-0.2.4:wasm_timer",
+    ],
+)

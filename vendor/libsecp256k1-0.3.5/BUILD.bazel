@@ -1,0 +1,87 @@
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+package(default_visibility = [
+    # Public for visibility by "@raze__crate__version//" targets.
+    #
+    # Prefer access through "//", which limits external
+    # visibility to explicit Cargo.toml dependencies.
+    "//visibility:public",
+])
+
+licenses([
+    "notice",  # Apache-2.0 from expression "Apache-2.0"
+])
+
+# Generated Targets
+
+# Unsupported target "public_key" with type "bench" omitted
+
+# Unsupported target "sign" with type "bench" omitted
+
+# Unsupported target "signature" with type "bench" omitted
+
+alias(
+    name = "libsecp256k1",
+    actual = ":secp256k1",
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+)
+
+rust_library(
+    name = "secp256k1",
+    srcs = glob(["**/*.rs"]),
+    aliases = {
+        "//vendor/rand-0.7.3:rand": "rand_test",
+    },
+    crate_features = [
+        "default",
+        "hmac",
+        "hmac-drbg",
+        "sha2",
+        "std",
+        "typenum",
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "0.3.5",
+    # buildifier: leave-alone
+    deps = [
+        "//vendor/arrayref-0.3.6:arrayref",
+        "//vendor/crunchy-0.2.2:crunchy",
+        "//vendor/digest-0.8.1:digest",
+        "//vendor/hmac-drbg-0.2.0:hmac_drbg",
+        "//vendor/rand-0.7.3:rand",
+        "//vendor/sha2-0.8.2:sha2",
+        "//vendor/subtle-2.2.3:subtle",
+        "//vendor/typenum-1.12.0:typenum",
+    ],
+)
+
+# Unsupported target "verify" with type "test" omitted
