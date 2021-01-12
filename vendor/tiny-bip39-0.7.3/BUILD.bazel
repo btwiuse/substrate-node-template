@@ -77,6 +77,12 @@ rust_library(
         "//vendor/sha2-0.8.2:sha2",
         "//vendor/unicode-normalization-0.1.13:unicode_normalization",
     ],
+    compile_data = [":txt"],
+)
+
+filegroup(
+    name = "txt",
+    srcs = glob(["**/*.txt"]),
 )
 
 # Unsupported target "generate" with type "test" omitted

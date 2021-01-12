@@ -49,7 +49,7 @@ rust_library(
     name = "secp256k1",
     srcs = glob(["**/*.rs"]),
     aliases = {
-        "//vendor/rand-0.7.3:rand": "rand_test",
+        "//vendor/rand-0.4.6:rand": "rand_test",
     },
     crate_features = [
         "default",
