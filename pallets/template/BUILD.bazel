@@ -74,3 +74,60 @@ alias(
         "manual",
     ],
 )
+"""
+@generated
+cargo-raze crate build file.
+
+DO NOT EDIT! Replaced on runs of cargo-raze
+"""
+
+# buildifier: disable=load
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_binary",
+    "rust_library",
+    "rust_test",
+)
+
+# buildifier: disable=load
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+# Generated Targets
+
+# Unsupported target "dump_yaml" with type "example" omitted
+
+rust_library(
+    name = "pallet_template",
+    srcs = glob(["**/*.rs"]),
+    crate_features = [
+    ],
+    crate_root = "src/lib.rs",
+    crate_type = "lib",
+    data = [],
+    edition = "2018",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-raze",
+        "manual",
+    ],
+    version = "2.0.0",
+    # buildifier: leave-alone
+    deps = [
+    #   "//cargo/vendor/linked-hash-map-0.5.3:linked_hash_map",
+	":frame_support",
+	":frame_system",
+	":parity_scale_codec",
+	":sp_core",
+	":sp_io",
+	":sp_runtime",
+	":sp_std",
+    ],
+)
+
+# Unsupported target "quickcheck" with type "test" omitted
+
+# Unsupported target "spec_test" with type "test" omitted
+
+# Unsupported target "test_round_trip" with type "test" omitted

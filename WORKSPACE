@@ -12,3 +12,4 @@ git_repository(
 load("@io_bazel_rules_rust//rust:repositories.bzl", "rust_repositories")
 
 rust_repositories(version = "nightly", iso_date = "2020-10-05", edition="2018")
+# rust_repositories(version = "nightly", iso_date = "2021-01-11", edition="2018")
