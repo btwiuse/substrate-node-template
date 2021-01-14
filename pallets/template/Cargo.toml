@@ -27,7 +27,6 @@ sp-runtime = { default-features = false, version = '2.0.1' }
 [dev-dependencies]
 sp-core = { default-features = false, version = '2.0.1' }
 sp-io = { default-features = false, version = '2.0.1' }
-sp-runtime = { default-features = false, version = '2.0.1' }
 
 [features]
 default = ['std']

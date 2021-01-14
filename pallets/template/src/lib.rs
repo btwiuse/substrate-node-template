@@ -15,6 +15,8 @@ use sp_std::vec::Vec;
 use sp_runtime::traits::StaticLookup;
 use sp_runtime::traits::Bounded;
 use sp_runtime::DispatchError;
+use sp_io::hashing::blake2_128;
+use frame_support::traits::Randomness; // https://crates.parity.io/frame_support/traits/trait.Randomness.html
 
 #[cfg(test)]
 mod mock;
@@ -30,6 +32,7 @@ pub trait Trait: frame_system::Trait {
 	/// Because this pallet emits events, it depends on the runtime's definition of an event.
 	type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
     type KittyIndex : Parameter + AtLeast32BitUnsigned + Bounded + Default + Copy;
+    type Randomness : Randomness<Self::Hash>;
 }
 
 // The pallet's runtime storage items.
@@ -247,5 +250,17 @@ impl<T: Trait> Module<T> {
         let kid = Self::kitties_count();
         // TODO: increment by one
         Ok(kid)
+    }
+}
+
+impl<T: Trait> Module<T> {
+    fn rand_dna(owner : &T::AccountId) -> [u8;16] {
+        (
+            T::Randomness::random_seed(), 
+            &owner, 
+            <frame_system::Module<T>>::extrinsic_index()
+        )
+          .
+            using_encoded(blake2_128)
     }
 }
