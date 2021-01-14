@@ -4,12 +4,17 @@
 /// Learn more about FRAME and the core library of Substrate FRAME pallets:
 /// https://substrate.dev/docs/en/knowledgebase/runtime/frame
 
+use codec::{Decode, Encode};
 use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch, traits::Get};
+use frame_support::sp_runtime::traits::AtLeast32BitUnsigned;
 use frame_system::ensure_signed;
 use frame_support::ensure;
 use frame_support::StorageMap;
+use frame_support::Parameter;
 use sp_std::vec::Vec;
 use sp_runtime::traits::StaticLookup;
+use sp_runtime::traits::Bounded;
+use sp_runtime::DispatchError;
 
 #[cfg(test)]
 mod mock;
@@ -17,10 +22,14 @@ mod mock;
 #[cfg(test)]
 mod tests;
 
+#[derive(Encode, Decode)]
+pub struct Kitty(pub [u8; 16]);
+
 /// Configure the pallet by specifying the parameters and types on which it depends.
 pub trait Trait: frame_system::Trait {
 	/// Because this pallet emits events, it depends on the runtime's definition of an event.
 	type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
+    type KittyIndex : Parameter + AtLeast32BitUnsigned + Bounded + Default + Copy;
 }
 
 // The pallet's runtime storage items.
@@ -38,13 +47,24 @@ decl_storage! {
         /// If a proof has an owner and a block number, then we know that it has been claimed!
         /// Otherwise, the proof is available to be claimed.
         Proofs: map hasher(blake2_128_concat) Vec<u8> => (T::AccountId, T::BlockNumber);
+
+        Kitties get(fn kitties) : map hasher(blake2_128_concat) T::KittyIndex => Option<Kitty>;
+
+        KittiesCount get(fn kitties_count) : T::KittyIndex;
+
+        KittyOwners get(fn kitty_owners) : map hasher(blake2_128_concat) T::KittyIndex => Option<T::KittyIndex>;
+
+        // Kitty
 	}
 }
 
 // Pallets use events to inform users when important changes are made.
 // https://substrate.dev/docs/en/knowledgebase/runtime/events
 decl_event!(
-	pub enum Event<T> where AccountId = <T as frame_system::Trait>::AccountId {
+	pub enum Event<T> where
+        AccountId = <T as frame_system::Trait>::AccountId,
+        KittyIndex = <T as Trait>::KittyIndex
+    {
 		/// Event documentation should end with an array that provides descriptive names for event
 		/// parameters. [something, who]
 		SomethingStored(u32, AccountId),
@@ -54,6 +74,12 @@ decl_event!(
         ClaimRevoked(AccountId, Vec<u8>),
         /// Event emitted when a claim is transferred by the owner. [who, whom, claim]
         ClaimTransferred(AccountId, AccountId, Vec<u8>),
+
+        /// Placeholder event to mark KittyIndex as used Type Parameter, any type parameter has to
+        /// be used once to make the rust compiler happy. see `rustc --explain E0392`. At the moment of writing 
+        /// HelloKitty(KittyIndex) means nothing, but later it will be used to indicate that a new kitty has
+        /// been created
+        HelloKitty(AccountId, KittyIndex),
 	}
 );
 
@@ -197,5 +223,29 @@ decl_module! {
             // Emit an event that the claim was transferred.
             Self::deposit_event(RawEvent::ClaimTransferred(sender, receiver, proof));
         }
+
+        /// Let there be kitties!
+        #[weight = 10_000]
+        fn create_kitty(origin) {
+            // Check that the extrinsic was signed and get the signer.
+            // This function will return an error if the extrinsic is not signed.
+            // https://substrate.dev/docs/en/knowledgebase/runtime/origin
+            let owner = ensure_signed(origin)?;
+            let kid = Self::new_kid()?;
+            Self::deposit_event(RawEvent::HelloKitty(owner, kid));
+        }
 	}
+}
+
+// another way to do it:
+// impl<T> Module<T> where T: Trait {
+// reference: https://stackoverflow.com/questions/54504026/how-do-i-provide-an-implementation-of-a-generic-struct-in-rust
+impl<T: Trait> Module<T> {
+    // this fn is prone to integer overflow, in which case an error shall be returned
+    // therefore the return type should be Result<T, E>
+    fn new_kid() -> sp_std::result::Result<T::KittyIndex,DispatchError> {
+        let kid = Self::kitties_count();
+        // TODO: increment by one
+        Ok(kid)
+    }
 }
