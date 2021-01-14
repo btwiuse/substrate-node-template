@@ -31,7 +31,7 @@ pub struct Kitty(pub [u8; 16]);
 pub trait Trait: frame_system::Trait {
 	/// Because this pallet emits events, it depends on the runtime's definition of an event.
 	type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
-    type KittyIndex : Parameter + AtLeast32BitUnsigned + Bounded + Default + Copy;
+    type KittyIndex : Parameter + AtLeast32BitUnsigned + Bounded + Default + Copy + From<i32>;
     type Randomness : Randomness<Self::Hash>;
 }
 
@@ -55,7 +55,7 @@ decl_storage! {
 
         KittiesCount get(fn kitties_count) : T::KittyIndex;
 
-        KittyOwners get(fn kitty_owners) : map hasher(blake2_128_concat) T::KittyIndex => Option<T::KittyIndex>;
+        KittyOwners get(fn kitty_owners) : map hasher(blake2_128_concat) T::KittyIndex => Option<T::AccountId>;
 
         // Kitty
 	}
@@ -263,4 +263,33 @@ impl<T: Trait> Module<T> {
           .
             using_encoded(blake2_128)
     }
+}
+
+impl<T : Trait> Module<T> {
+    // Error: not implemented
+    // rustc --explain E0202
+    // type KittyIndex = T::KittyIndex;
+
+    fn _link_kid_to_owner(kid : T::KittyIndex, owner : &T::AccountId) {
+        <KittyOwners::<T>>::insert(kid, &owner);
+    }
+
+    fn _link_kid_to_kitty(kid : T::KittyIndex, kitty : Kitty) {
+        <Kitties::<T>>::insert(kid, kitty);
+    }
+
+    fn _increment_kitties_count(kid : T::KittyIndex) {
+        <KittiesCount::<T>>::put(kid + 1.into());
+    }
+
+    fn register_kitty(
+        kid : T::KittyIndex,
+        kitty : Kitty,
+        owner : &T::AccountId)
+    {
+       Self::_link_kid_to_owner(kid, &owner);
+       Self::_link_kid_to_kitty(kid, kitty);
+       Self::_increment_kitties_count(kid);
+    }
+
 }
