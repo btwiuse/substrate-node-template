@@ -6,7 +6,6 @@
 
 use codec::{Decode, Encode};
 use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch, traits::Get};
-use frame_support::sp_runtime::traits::AtLeast32BitUnsigned;
 use frame_system::ensure_signed;
 use frame_support::ensure;
 use frame_support::StorageMap;
@@ -14,6 +13,8 @@ use frame_support::Parameter;
 use sp_std::vec::Vec;
 use sp_runtime::traits::StaticLookup;
 use sp_runtime::traits::Bounded;
+use sp_runtime::traits::AtLeast32BitUnsigned;
+use sp_runtime::traits::One;
 use sp_runtime::DispatchError;
 use sp_io::hashing::blake2_128;
 use frame_support::traits::Randomness; // https://crates.parity.io/frame_support/traits/trait.Randomness.html
@@ -31,7 +32,7 @@ pub struct Kitty(pub [u8; 16]);
 pub trait Trait: frame_system::Trait {
 	/// Because this pallet emits events, it depends on the runtime's definition of an event.
 	type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
-    type KittyIndex : Parameter + AtLeast32BitUnsigned + Bounded + Default + Copy + From<i32>;
+    type KittyIndex : Parameter + AtLeast32BitUnsigned + Bounded + Default + Copy;
     type Randomness : Randomness<Self::Hash>;
 }
 
@@ -283,7 +284,7 @@ impl<T : Trait> Module<T> {
     }
 
     fn _increment_kitties_count(kid : T::KittyIndex) {
-        <KittiesCount::<T>>::put::<>(kid + 1.into::<>());
+        <KittiesCount::<T>>::put::<>(kid + One::one::<>());
     }
 
     fn register_kitty(
