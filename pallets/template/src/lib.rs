@@ -221,6 +221,10 @@ decl_module! {
             ensure!(receiver != sender, Error::<T>::ProofAlreadyClaimed);
 
             // Transfer claim ownership to receiver
+            // https://stackoverflow.com/questions/59140724/what-is-the-difference-between-traitt-and-traitt
+            // Proofs::<T>::insert(&proof, (&receiver, current_block));
+            // <Proofs<T>>::insert(&proof, (&receiver, current_block));
+            // <Proofs::<T>>::insert(&proof, (&receiver, current_block));
             Proofs::<T>::insert(&proof, (&receiver, current_block));
 
             // Emit an event that the claim was transferred.
@@ -271,15 +275,15 @@ impl<T : Trait> Module<T> {
     // type KittyIndex = T::KittyIndex;
 
     fn _link_kid_to_owner(kid : T::KittyIndex, owner : &T::AccountId) {
-        <KittyOwners::<T>>::insert(kid, &owner);
+        <KittyOwners::<T>>::insert::<>(kid, &owner);
     }
 
     fn _link_kid_to_kitty(kid : T::KittyIndex, kitty : Kitty) {
-        <Kitties::<T>>::insert(kid, kitty);
+        <Kitties::<T>>::insert::<>(kid, kitty);
     }
 
     fn _increment_kitties_count(kid : T::KittyIndex) {
-        <KittiesCount::<T>>::put(kid + 1.into());
+        <KittiesCount::<T>>::put::<>(kid + 1.into::<>());
     }
 
     fn register_kitty(
@@ -287,9 +291,9 @@ impl<T : Trait> Module<T> {
         kitty : Kitty,
         owner : &T::AccountId)
     {
-       Self::_link_kid_to_owner(kid, &owner);
-       Self::_link_kid_to_kitty(kid, kitty);
-       Self::_increment_kitties_count(kid);
+       Self::_link_kid_to_owner::<>(kid, &owner);
+       Self::_link_kid_to_kitty::<>(kid, kitty);
+       Self::_increment_kitties_count::<>(kid);
     }
 
 }
