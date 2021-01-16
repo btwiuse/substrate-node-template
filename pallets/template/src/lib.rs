@@ -87,8 +87,10 @@ decl_event!(
         /// Placeholder event to mark KittyIndex as used Type Parameter, any type parameter has to
         /// be used once to make the rust compiler happy. see `rustc --explain E0392`. At the moment of writing 
         /// HelloKitty(KittyIndex) means nothing, but later it will be used to indicate that a new kitty has
-        /// been created
+        /// been created. [owner, kid]
         HelloKitty(AccountId, KittyIndex),
+        /// Kitty has been transferred from one owner to another. [owner, recv, kid]
+        KittyTransferred(AccountId, AccountId, KittyIndex),
 	}
 );
 
@@ -113,6 +115,8 @@ decl_error! {
         InvalidKittyIndex,
         /// The offspring's dna must come from different parents.
         SelfReproductionNotAllowed,
+        /// A kitty can only be transferred by its owner.
+        NotKittyOwner,
 	}
 }
 
@@ -256,6 +260,16 @@ decl_module! {
             Self::register_kitty(kid, kitty, &owner);
             Self::deposit_event(RawEvent::HelloKitty(owner, kid));
         }
+
+        /// Transfer a kitty to another person.
+        #[weight = 10_000]
+        fn transfer_kitty(origin, recv : T::AccountId, kid : T::KittyIndex) {
+            let owner = ensure_signed(origin)?;
+            ensure!(owner == Self::kitty_owners(kid).unwrap(), <Error<T>>::NotKittyOwner);
+            ensure!(Self::kitties(kid).is_some(), <Error<T>>::InvalidKittyIndex);
+            <KittyOwners::<T>>::insert::<>(kid, recv.clone());
+            Self::deposit_event(RawEvent::KittyTransferred(owner, recv.clone(), kid));
+        }
 	}
 }
 
@@ -272,6 +286,7 @@ impl<T: Trait> Module<T> {
     }
 }
 
+// dna related functions
 impl<T: Trait> Module<T> {
     fn rand_dna(owner : &T::AccountId) -> DNA {
         (
