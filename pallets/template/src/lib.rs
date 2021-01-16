@@ -25,9 +25,12 @@ mod mock;
 #[cfg(test)]
 mod tests;
 
+pub type DNA = [u8; 16];
+
+// `derive` may only be applied to structs, enums and unions
 #[derive(Encode, Decode)]
 pub struct Kitty{
-    pub dna : [u8; 16],
+    pub dna : DNA,
 }
 
 /// Configure the pallet by specifying the parameters and types on which it depends.
@@ -106,6 +109,10 @@ decl_error! {
         ProofTooLarge,
         /// Too many kitties.
         KittyOverflow,
+        /// The index has ho associated kitty.
+        InvalidKittyIndex,
+        /// The offspring's dna must come from different parents.
+        SelfReproductionNotAllowed,
 	}
 }
 
@@ -266,7 +273,7 @@ impl<T: Trait> Module<T> {
 }
 
 impl<T: Trait> Module<T> {
-    fn rand_dna(owner : &T::AccountId) -> [u8;16] {
+    fn rand_dna(owner : &T::AccountId) -> DNA {
         (
             T::Randomness::random_seed(), 
             &owner, 
@@ -274,6 +281,23 @@ impl<T: Trait> Module<T> {
         )
           .
             using_encoded(blake2_128)
+    }
+    fn combine_dna(mask : DNA, x: DNA, y : DNA) -> DNA {
+        let mut dna = [0u8; 16];
+        for i in 0..mask.len() {
+            dna[i] = (mask[i] & x[i]) | (mask[i] & y[i]);
+        }
+        dna
+    }
+    fn do_breed(owner : &T::AccountId, x : T::KittyIndex, y : T::KittyIndex) -> sp_std::result::Result<T::KittyIndex, DispatchError>{
+        ensure!(x != y, <Error<T>>::SelfReproductionNotAllowed);
+        let x = Self::kitties(x).ok_or(<Error<T>>::InvalidKittyIndex)?;
+        let y = Self::kitties(y).ok_or(<Error<T>>::InvalidKittyIndex)?;
+        let m = Self::rand_dna(&owner);
+        let i = Self::new_kid()?;
+        let d = Self::combine_dna(m, x.dna, y.dna);
+        Self::register_kitty( i, Kitty{dna: d}, owner);
+        Ok(i)
     }
 }
 
