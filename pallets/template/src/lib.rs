@@ -77,6 +77,7 @@ decl_event!(
 		/// Event documentation should end with an array that provides descriptive names for event
 		/// parameters. [something, who]
 		SomethingStored(u32, AccountId),
+
         /// Event emitted when a proof has been claimed. [who, claim]
         ClaimCreated(AccountId, Vec<u8>),
         /// Event emitted when a claim is revoked by the owner. [who, claim]
@@ -91,6 +92,8 @@ decl_event!(
         HelloKitty(AccountId, KittyIndex),
         /// Kitty has been transferred from one owner to another. [owner, recv, kid]
         KittyTransferred(AccountId, AccountId, KittyIndex),
+        /// Kitty has been bred. [owner, kid]
+        KittyBred(AccountId, KittyIndex),
 	}
 );
 
@@ -102,6 +105,7 @@ decl_error! {
 		/// Errors should have helpful documentation associated with them.
 		StorageOverflow,
         /// The proof has already been claimed.
+
         ProofAlreadyClaimed,
         /// The proof does not exist, so it cannot be revoked.
         NoSuchProof,
@@ -109,6 +113,7 @@ decl_error! {
         NotProofOwner,
         /// The proof is too large to consume.
         ProofTooLarge,
+
         /// Too many kitties.
         KittyOverflow,
         /// The index has ho associated kitty.
@@ -270,6 +275,14 @@ decl_module! {
             <KittyOwners::<T>>::insert::<>(kid, recv.clone());
             Self::deposit_event(RawEvent::KittyTransferred(owner, recv.clone(), kid));
         }
+
+        /// Breed a new kitty off existing ones.
+        #[weight = 10_000]
+        fn breed_kitty(origin, x : T::KittyIndex, y : T::KittyIndex) {
+            let owner = ensure_signed(origin)?;
+            let kid = Self::do_breed(&owner, x, y)?;
+            Self::deposit_event(RawEvent::KittyBred(owner, kid));
+        }
 	}
 }
 
@@ -288,6 +301,7 @@ impl<T: Trait> Module<T> {
 
 // dna related functions
 impl<T: Trait> Module<T> {
+
     fn rand_dna(owner : &T::AccountId) -> DNA {
         (
             T::Randomness::random_seed(), 
@@ -297,6 +311,7 @@ impl<T: Trait> Module<T> {
           .
             using_encoded(blake2_128)
     }
+
     fn combine_dna(mask : DNA, x: DNA, y : DNA) -> DNA {
         let mut dna = [0u8; 16];
         for i in 0..mask.len() {
@@ -304,6 +319,7 @@ impl<T: Trait> Module<T> {
         }
         dna
     }
+
     fn do_breed(owner : &T::AccountId, x : T::KittyIndex, y : T::KittyIndex) -> sp_std::result::Result<T::KittyIndex, DispatchError>{
         ensure!(x != y, <Error<T>>::SelfReproductionNotAllowed);
         let x = Self::kitties(x).ok_or(<Error<T>>::InvalidKittyIndex)?;
@@ -314,6 +330,7 @@ impl<T: Trait> Module<T> {
         Self::register_kitty( i, Kitty{dna: d}, owner);
         Ok(i)
     }
+
 }
 
 impl<T : Trait> Module<T> {
@@ -333,11 +350,7 @@ impl<T : Trait> Module<T> {
         <KittiesCount::<T>>::put::<>(kid + One::one::<>());
     }
 
-    fn register_kitty(
-        kid : T::KittyIndex,
-        kitty : Kitty,
-        owner : &T::AccountId)
-    {
+    fn register_kitty( kid : T::KittyIndex, kitty : Kitty, owner : &T::AccountId) {
        Self::_link_kid_to_owner::<>(kid, &owner);
        Self::_link_kid_to_kitty::<>(kid, kitty);
        Self::_increment_kitties_count::<>(kid);
