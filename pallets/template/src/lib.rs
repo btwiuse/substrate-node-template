@@ -26,7 +26,9 @@ mod mock;
 mod tests;
 
 #[derive(Encode, Decode)]
-pub struct Kitty(pub [u8; 16]);
+pub struct Kitty{
+    pub dna : [u8; 16],
+}
 
 /// Configure the pallet by specifying the parameters and types on which it depends.
 pub trait Trait: frame_system::Trait {
@@ -102,6 +104,8 @@ decl_error! {
         NotProofOwner,
         /// The proof is too large to consume.
         ProofTooLarge,
+        /// Too many kitties.
+        KittyOverflow,
 	}
 }
 
@@ -240,6 +244,9 @@ decl_module! {
             // https://substrate.dev/docs/en/knowledgebase/runtime/origin
             let owner = ensure_signed(origin)?;
             let kid = Self::new_kid()?;
+            let dna = Self::rand_dna(&owner);
+            let kitty = Kitty{dna}; // https://doc.rust-lang.org/book/ch05-01-defining-structs.html
+            Self::register_kitty(kid, kitty, &owner);
             Self::deposit_event(RawEvent::HelloKitty(owner, kid));
         }
 	}
@@ -251,9 +258,9 @@ decl_module! {
 impl<T: Trait> Module<T> {
     // this fn is prone to integer overflow, in which case an error shall be returned
     // therefore the return type should be Result<T, E>
-    fn new_kid() -> sp_std::result::Result<T::KittyIndex,DispatchError> {
+    fn new_kid() -> sp_std::result::Result<T::KittyIndex, DispatchError> {
         let kid = Self::kitties_count();
-        // TODO: increment by one
+        ensure!(kid < T::KittyIndex::max_value(), <Error<T>>::KittyOverflow);
         Ok(kid)
     }
 }
