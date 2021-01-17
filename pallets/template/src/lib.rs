@@ -18,6 +18,10 @@ use sp_runtime::traits::One;
 use sp_runtime::DispatchError;
 use sp_io::hashing::blake2_128;
 use frame_support::traits::Randomness; // https://crates.parity.io/frame_support/traits/trait.Randomness.html
+use frame_support::traits::Currency;
+use frame_support::traits::LockIdentifier;
+use frame_support::traits::LockableCurrency;
+use frame_support::traits::WithdrawReasons;
 
 #[cfg(test)]
 mod mock;
