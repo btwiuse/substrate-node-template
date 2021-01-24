@@ -264,6 +264,8 @@ impl pallet_sudo::Trait for Runtime {
 /// Configure the template pallet in pallets/template.
 impl pallet_template::Trait for Runtime {
 	type Event = Event;
+    type Randomness = RandomnessCollectiveFlip;
+	type KittyIndex = u32;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
