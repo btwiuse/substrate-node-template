@@ -70,6 +70,12 @@ decl_storage! {
 
         // L2Q3
         KittiesOwnedBy get(fn kitties_owned_by) : double_map hasher(blake2_128_concat) T::AccountId, hasher(blake2_128_concat) T::KittyIndex => T::KittyIndex;
+
+        // L2Q4
+        KittyParents : map hasher(blake2_128_concat) T::KittyIndex => (T::KittyIndex, T::KittyIndex);
+        KittySpouses : map hasher(blake2_128_concat) T::KittyIndex => Vec<T::KittyIndex>;
+        KittySiblings : map hasher(blake2_128_concat) T::KittyIndex => Vec<T::KittyIndex>;
+        KittyChildren : map hasher(blake2_128_concat) T::KittyIndex => Vec<T::KittyIndex>;
 	}
 }
 
