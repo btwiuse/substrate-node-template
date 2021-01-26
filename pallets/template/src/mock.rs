@@ -51,6 +51,8 @@ impl system::Trait for Test {
 
 impl Trait for Test {
 	type Event = ();
+    type Randomness = pallet_randomness_collective_flip::Module<Test>;
+    type KittyIndex = u32;
 }
 
 pub type TemplateModule = Module<Test>;

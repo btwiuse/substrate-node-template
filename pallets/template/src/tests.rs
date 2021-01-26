@@ -135,3 +135,9 @@ fn create_huge_claim_fails() {
         );
 	});
 }
+
+/// L2Q5
+/// here are kitty related tests
+#[test]
+fn create_kitty_ok() {
+}
