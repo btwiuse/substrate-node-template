@@ -265,6 +265,7 @@ impl pallet_sudo::Trait for Runtime {
 impl pallet_template::Trait for Runtime {
 	type Event = Event;
     type Randomness = RandomnessCollectiveFlip;
+    // L2Q2
 	type KittyIndex = u32;
 }
 

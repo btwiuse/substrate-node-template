@@ -41,6 +41,7 @@ pub struct Kitty{
 pub trait Trait: frame_system::Trait {
 	/// Because this pallet emits events, it depends on the runtime's definition of an event.
 	type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
+    // L2Q2
     type KittyIndex : Parameter + AtLeast32BitUnsigned + Bounded + Default + Copy;
     type Randomness : Randomness<Self::Hash>;
 }
@@ -67,7 +68,8 @@ decl_storage! {
 
         KittyOwners get(fn kitty_owners) : map hasher(blake2_128_concat) T::KittyIndex => Option<T::AccountId>;
 
-        // Kitty
+        // L2Q3
+        KittiesOwnedBy get(fn kitties_owned_by) : double_map hasher(blake2_128_concat) T::AccountId, hasher(blake2_128_concat) T::KittyIndex => T::KittyIndex;
 	}
 }
 
@@ -274,9 +276,14 @@ decl_module! {
         #[weight = 10_000]
         fn transfer_kitty(origin, recv : T::AccountId, kid : T::KittyIndex) {
             let owner = ensure_signed(origin)?;
-            ensure!(owner == Self::kitty_owners(kid).unwrap(), <Error<T>>::NotKittyOwner);
+
+            // ensure kitty exists
             ensure!(Self::kitties(kid).is_some(), <Error<T>>::InvalidKittyIndex);
-            <KittyOwners::<T>>::insert::<>(kid, recv.clone());
+
+            // L2Q1: ensure owner owns kitty
+            ensure!(owner == Self::kitty_owners(kid).unwrap(), <Error<T>>::NotKittyOwner);
+
+            Self::_transfer_kitty(kid, &owner, &recv);
             Self::deposit_event(RawEvent::KittyTransferred(owner, recv.clone(), kid));
         }
 
@@ -342,6 +349,7 @@ impl<T : Trait> Module<T> {
     // rustc --explain E0202
     // type KittyIndex = T::KittyIndex;
 
+    // insert is idempotent
     fn _link_kid_to_owner(kid : T::KittyIndex, owner : &T::AccountId) {
         <KittyOwners::<T>>::insert::<>(kid, &owner);
     }
@@ -354,10 +362,27 @@ impl<T : Trait> Module<T> {
         <KittiesCount::<T>>::put::<>(kid + One::one::<>());
     }
 
+    fn _insert_kitty_owned_by(kid : T::KittyIndex, owner : &T::AccountId) {
+        <KittiesOwnedBy::<T>>::insert::<>(&owner, kid, kid);
+    }
+
+    fn _remove_kitty_owned_by(kid : T::KittyIndex, owner : &T::AccountId) {
+        <KittiesOwnedBy::<T>>::remove::<>(&owner, kid);
+    }
+
+    // invoked when a new kitty is created / bred
     fn register_kitty( kid : T::KittyIndex, kitty : Kitty, owner : &T::AccountId) {
        Self::_link_kid_to_owner::<>(kid, &owner);
        Self::_link_kid_to_kitty::<>(kid, kitty);
        Self::_increment_kitties_count::<>(kid);
+       Self::_insert_kitty_owned_by::<>(kid, owner);
+    }
+
+    // invoked when a new kitty is created / bred
+    fn _transfer_kitty( kid : T::KittyIndex, owner : &T::AccountId, recv : &T::AccountId) {
+       Self::_remove_kitty_owned_by::<>(kid, &owner);
+       Self::_insert_kitty_owned_by::<>(kid, &recv);
+       Self::_link_kid_to_owner::<>(kid, &recv);
     }
 
 }
