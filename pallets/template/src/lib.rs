@@ -19,9 +19,7 @@ use sp_runtime::DispatchError;
 use sp_io::hashing::blake2_128;
 use frame_support::traits::Randomness; // https://crates.parity.io/frame_support/traits/trait.Randomness.html
 use frame_support::traits::Currency;
-use frame_support::traits::LockIdentifier;
-use frame_support::traits::LockableCurrency;
-use frame_support::traits::WithdrawReasons;
+use frame_support::traits::ReservableCurrency;
 
 #[cfg(test)]
 mod mock;
@@ -44,6 +42,7 @@ pub trait Trait: frame_system::Trait {
     // L2Q2
     type KittyIndex : Parameter + AtLeast32BitUnsigned + Bounded + Default + Copy;
     type Randomness : Randomness<Self::Hash>;
+    type Currency: Currency<Self::AccountId> + ReservableCurrency<Self::AccountId>;
 }
 
 // The pallet's runtime storage items.
@@ -84,6 +83,8 @@ decl_storage! {
 decl_event!(
 	pub enum Event<T> where
         AccountId = <T as frame_system::Trait>::AccountId,
+        Balance = <<T as Trait>::Currency as Currency<<T as frame_system::Trait>::AccountId>>::Balance,
+        BlockNumber = <T as frame_system::Trait>::BlockNumber,
         KittyIndex = <T as Trait>::KittyIndex
     {
 		/// Event documentation should end with an array that provides descriptive names for event
@@ -106,6 +107,11 @@ decl_event!(
         KittyTransferred(AccountId, AccountId, KittyIndex),
         /// Kitty has been bred. [owner, kid]
         KittyBred(AccountId, KittyIndex),
+
+        /// Fund is locked
+        FundLocked(AccountId, Balance, BlockNumber),
+        /// Fund is unlocked
+        FundUnlocked(AccountId, Balance, BlockNumber),
 	}
 );
 
@@ -300,8 +306,30 @@ decl_module! {
             let kid = Self::do_breed(&owner, x, y)?;
             Self::deposit_event(RawEvent::KittyBred(owner, kid));
         }
+
+        /// L2Q6: Lock certain amount of funds from caller
+        #[weight = 10_000]
+        fn lock_fund(origin, amount : BalanceOf<T>) {
+            let caller = ensure_signed(origin)?;
+            T::Currency::reserve(&caller, amount).map_err(|_| "Doesn't have enough funds to lock")?;
+            let now = <frame_system::Module<T>>::block_number();
+            Self::deposit_event(RawEvent::FundLocked(caller, amount, now));
+        }
+
+        /// Lock certain amount of funds from caller
+        #[weight = 10_000]
+        fn unlock_fund(origin, amount : BalanceOf<T>) {
+            let caller = ensure_signed(origin)?;
+            T::Currency::unreserve(&caller, amount);
+            let now = <frame_system::Module<T>>::block_number();
+            Self::deposit_event(RawEvent::FundUnlocked(caller, amount, now));
+        }
+
 	}
 }
+
+// https://substrate.dev/recipes/currency.html
+type BalanceOf<T> = <<T as Trait>::Currency as Currency<<T as frame_system::Trait>::AccountId>>::Balance;
 
 // another way to do it:
 // impl<T> Module<T> where T: Trait {
