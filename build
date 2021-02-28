@@ -1,0 +1,1 @@
+docker run -v $PWD/.local:/root/.local -v $PWD:/var/www/node-template -e WASM_BUILD_TOOLCHAIN=nightly -e CARGO_HOME=/var/www/node-template/.cargo -w /var/www/node-template -p 9944:9944 -it paritytech/ci-linux:production bash -c "bash; rustup default nightly; cargo build --release --features runtime-benchmarks"

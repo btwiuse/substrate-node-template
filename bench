@@ -1,0 +1,1 @@
+./target/release/node-template benchmark --chain dev --execution=wasm --wasm-execution=compiled --pallet pallet_template --extrinsic do_something --steps 20 --repeat 50
