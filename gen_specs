@@ -1,0 +1,2 @@
+./target/release/node-template build-spec > myCustomSpec.json
+./target/release/node-template build-spec --chain=myCustomSpec.json --raw > customSpecRaw.json
