@@ -19,6 +19,7 @@ mod benchmarking;
 pub mod pallet {
 	use frame_support::{dispatch::DispatchResult, pallet_prelude::*};
 	use frame_system::pallet_prelude::*;
+	use sp_std::vec::Vec;
 
 	/// Configure the pallet by specifying the parameters and types on which it depends.
 	#[pallet::config]
@@ -39,6 +40,9 @@ pub mod pallet {
 	// https://substrate.dev/docs/en/knowledgebase/runtime/storage#declaring-storage-items
 	pub type Something<T> = StorageValue<_, u32>;
 
+	#[pallet::storage]
+	pub type Proofs<T: Config> = StorageMap<_, Blake2_128Concat, Vec<u8>, (T::AccountId, T::BlockNumber), ValueQuery>;
+
 	// Pallets use events to inform users when important changes are made.
 	// https://substrate.dev/docs/en/knowledgebase/runtime/events
 	#[pallet::event]
@@ -48,6 +52,12 @@ pub mod pallet {
 		/// Event documentation should end with an array that provides descriptive names for event
 		/// parameters. [something, who]
 		SomethingStored(u32, T::AccountId),
+		/// Event emitted when a proof has been claimed. [who, claim]
+		ClaimCreated(T::AccountId, Vec<u8>),
+		/// Event emitted when a claim is revoked by the owner. [who, claim]
+		ClaimRevoked(T::AccountId, Vec<u8>),
+		/// Event emitted when a claim is transferred by then owner to someone else. [who, claim, to]
+		ClaimTransferred(T::AccountId, Vec<u8>, T::AccountId),
 	}
 
 	// Errors inform users that something went wrong.
@@ -57,6 +67,12 @@ pub mod pallet {
 		NoneValue,
 		/// Errors should have helpful documentation associated with them.
 		StorageOverflow,
+		/// The proof has already been claimed.
+		ProofAlreadyClaimed,
+		/// The proof does not exist, so it cannot be revoked.
+		NoSuchProof,
+		/// The proof is claimed by another account, so caller cannot revoke it.
+		NotProofOwner,
 	}
 
 	#[pallet::hooks]
@@ -102,6 +118,39 @@ pub mod pallet {
 					Ok(())
 				},
 			}
+		}
+
+		#[pallet::weight(1_000)]
+		pub fn create_claim(origin: OriginFor<T>, proof: Vec<u8>) -> DispatchResult {
+			let sender = ensure_signed(origin)?;
+			ensure!(!Proofs::<T>::contains_key(&proof), Error::<T>::ProofAlreadyClaimed);
+			let current_block = <frame_system::Pallet<T>>::block_number();
+			Proofs::<T>::insert(&proof, (&sender, current_block));
+			Self::deposit_event(Event::ClaimCreated(sender, proof));
+			Ok(())
+		}
+
+		#[pallet::weight(1_000)]
+		pub fn revoke_claim(origin: OriginFor<T>, proof: Vec<u8>) -> DispatchResult {
+			let sender = ensure_signed(origin)?;
+			ensure!(Proofs::<T>::contains_key(&proof), Error::<T>::NoSuchProof);
+			let (owner, _) = Proofs::<T>::get(&proof);
+			ensure!(sender == owner, Error::<T>::NotProofOwner);
+			Proofs::<T>::remove(&proof);
+			Self::deposit_event(Event::ClaimRevoked(sender, proof));
+			Ok(())
+		}
+
+		#[pallet::weight(1_1000)]
+		pub fn transfer_claim(origin: OriginFor<T>, proof: Vec<u8>, to: T::AccountId) -> DispatchResult {
+			let sender = ensure_signed(origin)?;
+			ensure!(Proofs::<T>::contains_key(&proof), Error::<T>::NoSuchProof);
+			let (owner, _) = Proofs::<T>::get(&proof);
+			ensure!(sender == owner, Error::<T>::NotProofOwner);
+			let current_block = <frame_system::Pallet<T>>::block_number();
+			Proofs::<T>::insert(&proof, (&to, current_block));
+			Self::deposit_event(Event::ClaimTransferred(sender, proof, to));
+			Ok(())
 		}
 	}
 }
